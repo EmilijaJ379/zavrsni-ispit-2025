@@ -9,5 +9,5 @@ public class ZavrsniIspit2025Application {
 	public static void main(String[] args) {
 		SpringApplication.run(ZavrsniIspit2025Application.class, args);
 	}
- 
+
 }
