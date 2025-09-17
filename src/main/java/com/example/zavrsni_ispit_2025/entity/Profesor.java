@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "profesor")
 @NoArgsConstructor
@@ -37,6 +38,10 @@ public class Profesor {
 
     @JsonIgnore
     private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Subject> subjects;
 
     public Integer getId() {
         return id;
@@ -94,4 +99,11 @@ public class Profesor {
         this.deletedAt = deletedAt;
     }
 
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
 }

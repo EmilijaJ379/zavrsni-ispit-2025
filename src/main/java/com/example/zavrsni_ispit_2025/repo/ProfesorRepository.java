@@ -14,4 +14,6 @@ public interface ProfesorRepository extends JpaRepository<Profesor, Integer> {
 
     Optional<Profesor> findByIdAndDeletedAtIsNull(Integer id);
 
+    Boolean existsByIdAndDeletedAtIsNull(Integer id);
+
 }

@@ -2,6 +2,7 @@ package com.example.zavrsni_ispit_2025.service;
 
 import com.example.zavrsni_ispit_2025.entity.Profesor;
 import com.example.zavrsni_ispit_2025.entity.Subject;
+import com.example.zavrsni_ispit_2025.repo.ProfesorRepository;
 import com.example.zavrsni_ispit_2025.repo.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class SubjectService {
     @Autowired
     private SubjectRepository subjectRepository;
 
+    @Autowired
+    private ProfesorRepository profesorRepository;
+
     public List<Subject> getSubject() {
         return subjectRepository.findAllByDeletedAtIsNull();
     }
@@ -30,8 +34,8 @@ public class SubjectService {
         Subject subject = new Subject();
         subject.setName(model.getName());
 
-        Profesor profesor = new Profesor();
-        profesor.setId(model.getProfesor().getId());
+        Profesor profesor = profesorRepository.findById(model.getProfesor().getId())
+                .orElseThrow(() -> new RuntimeException("Profesor not found"));
         subject.setProfesor(profesor);
 
         subject.setYear(model.getYear());
@@ -40,11 +44,12 @@ public class SubjectService {
     }
 
     public void updateSubject(Integer id, Subject model){
-        Subject subject = this.getSubjectById(id).orElseThrow();
+        Subject subject = this.getSubjectById(id)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
         subject.setName(model.getName());
 
-        Profesor profesor = new Profesor();
-        profesor.setId(model.getProfesor().getId());
+        Profesor profesor = profesorRepository.findById(model.getProfesor().getId())
+                .orElseThrow(() -> new RuntimeException("Profesor not found"));
         subject.setProfesor(profesor);
 
         subject.setYear(model.getYear());
@@ -53,8 +58,9 @@ public class SubjectService {
     }
 
     public void deleteSubject(Integer id){
-        Subject subject = getSubjectById(id).orElseThrow();
+        Subject subject = getSubjectById(id)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
         subject.setDeletedAt(LocalDateTime.now());
-        subjectRepository.save(subject);
+        subjectRepository.delete(subject);
     }
 }

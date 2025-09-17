@@ -35,7 +35,9 @@ public class ProfesorService {
     }
 
     public Profesor updateProfesor(Integer id, Profesor model){
-        Profesor profesor = getProfesorById(id).orElseThrow();profesor.setFirstName(model.getFirstName());
+        Profesor profesor = getProfesorById(id).orElseThrow(()
+                -> new RuntimeException("Profesor not found"));
+        profesor.setFirstName(model.getFirstName());
         profesor.setLastName(model.getLastName());
         profesor.setEmail(model.getEmail());
         profesor.setUpdatedAt(LocalDateTime.now());
@@ -43,8 +45,10 @@ public class ProfesorService {
     }
 
     public void deleteProfesor(Integer id){
-        Profesor profesor = getProfesorById(id).orElseThrow();
+        Profesor profesor = getProfesorById(id).orElseThrow(()
+                -> new RuntimeException("Profesor not found with id " + id));
+
         profesor.setDeletedAt(LocalDateTime.now());
-        profesorRepository.save(profesor);
+        profesorRepository.delete(profesor);
     }
 }
