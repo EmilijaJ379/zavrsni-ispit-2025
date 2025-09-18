@@ -46,7 +46,7 @@ public class ProfesorService {
 
     public void deleteProfesor(Integer id){
         Profesor profesor = getProfesorById(id).orElseThrow(()
-                -> new RuntimeException("Profesor not found with id " + id));
+                -> new RuntimeException("Profesor not found"));
 
         profesor.setDeletedAt(LocalDateTime.now());
         profesorRepository.delete(profesor);
